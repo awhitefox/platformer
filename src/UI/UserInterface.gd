@@ -24,6 +24,9 @@ func update_ui() -> void:
 
 
 func set_paused(value: bool) -> void:
+    if Game.current_gamemode == Game.Gamemodes.SPEEDRUN:
+        $PauseOverlay/VBoxContainer/BackButton.change_scene()
+        return
     paused = value
     get_tree().paused = value
     $PauseOverlay.visible = value
@@ -31,13 +34,9 @@ func set_paused(value: bool) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("pause"):
-        if Game.current_gamemode == Game.Gamemodes.SPEEDRUN:
-            $PauseOverlay/VBoxContainer/BackButton.change_scene()
-            return
         self.paused = !self.paused
         get_tree().set_input_as_handled()
         
-
 
 func _on_ResumeButton_button_up() -> void:
     self.paused = false
