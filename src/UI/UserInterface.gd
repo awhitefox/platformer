@@ -1,20 +1,26 @@
 extends Control
 
 
-onready var _default_label_text = $Label.text
+onready var _default_score_text = $Inner/Score.text
 
 
 var paused := false setget set_paused
 
 
 func _ready() -> void:
+    $Inner/Stopwatch.visible = Game.current_gamemode == Game.Gamemodes.SPEEDRUN
     # warning-ignore:return_value_discarded
     PlayerData.connect("score_updated", self, "update_ui")
     update_ui()
 
 
+func _process(delta: float) -> void:
+    if Game.current_gamemode == Game.Gamemodes.SPEEDRUN:
+        $Inner/Stopwatch.text = SpeedrunStopwatch.get_time_formatted()
+
+
 func update_ui() -> void:
-    $Label.text = _default_label_text % PlayerData.score
+    $Inner/Score.text = _default_score_text % PlayerData.score
 
 
 func set_paused(value: bool) -> void:
@@ -25,8 +31,12 @@ func set_paused(value: bool) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("pause"):
+        if Game.current_gamemode == Game.Gamemodes.SPEEDRUN:
+            $PauseOverlay/VBoxContainer/BackButton.change_scene()
+            return
         self.paused = !self.paused
         get_tree().set_input_as_handled()
+        
 
 
 func _on_ResumeButton_button_up() -> void:

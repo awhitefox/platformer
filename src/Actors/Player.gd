@@ -10,6 +10,8 @@ var _jump_queued := false
 
 
 func _ready() -> void:
+    if Game.current_gamemode == Game.Gamemodes.SPEEDRUN:
+        SpeedrunStopwatch.start()
     PlayerData.save_and_reset_score()
 
 

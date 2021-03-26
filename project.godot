@@ -39,6 +39,8 @@ config/icon="res://assets/icon.png"
 [autoload]
 
 PlayerData="*res://src/Autoload/PlayerData.gd"
+Game="*res://src/Autoload/Game.tscn"
+SpeedrunStopwatch="*res://src/Autoload/SpeedrunStopwatch.tscn"
 
 [display]
 
